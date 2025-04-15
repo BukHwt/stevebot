@@ -9,7 +9,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://stevebot.vercel.app",
   "https://steveandersonthedeveloper.com",
-  "https://portfolio-project-bukhwt-steve-andersons-projects-d862a8e0.vercel.app",
+  "https://portfolio-project-5gl6dwvna-steve-andersons-projects-d862a8e0.vercel.app",
 ];
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
