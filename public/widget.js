@@ -85,6 +85,45 @@
     .stevebot-typing .dot-1 { animation-delay: 0s; }
     .stevebot-typing .dot-2 { animation-delay: 0.2s; }
     .stevebot-typing .dot-3 { animation-delay: 0.4s; }
+    .stevebot-msg {
+        margin-bottom: 8px;
+        display: flex;
+        flex-direction: column;
+        font-family: sans-serif;
+    }
+
+    .stevebot-msg.user {
+        align-items: flex-end;
+    }
+
+    .stevebot-msg.bot {
+        align-items: flex-start;
+    }
+
+    .stevebot-bubble {
+        padding: 8px 12px;
+        border-radius: 16px;
+        max-width: 80%;
+        word-wrap: break-word;
+    }
+
+    .stevebot-msg.user .stevebot-bubble {
+        background-color: #eee;
+        color: #000;
+        border-bottom-right-radius: 0;
+    }
+
+    .stevebot-msg.bot .stevebot-bubble {
+        background-color: #0076b6;
+        color: white;
+        border-bottom-left-radius: 0;
+    }
+
+    .stevebot-timestamp {
+        font-size: 11px;
+        color: #999;
+        margin-top: 2px;
+    }
     `;
   document.head.appendChild(style);
 
@@ -169,7 +208,22 @@
 
   function addMsg(who, text) {
     const div = document.createElement("div");
-    div.innerHTML = `<strong>${who}:</strong> ${text}`;
+    div.className = `stevebot-msg ${who === "You" ? "user" : "bot"}`;
+
+    const bubble = document.createElement("div");
+    bubble.className = "stevebot-bubble";
+    bubble.innerText = text;
+
+    const timestamp = document.createElement("div");
+    timestamp.className = "stevebot-timestamp";
+    timestamp.innerText = new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    div.appendChild(bubble);
+    div.appendChild(timestamp);
+
     msgBox.appendChild(div);
     msgBox.scrollTop = msgBox.scrollHeight;
   }
