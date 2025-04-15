@@ -193,12 +193,20 @@
         body: JSON.stringify({ question: text }),
       });
 
+      if (!res.ok) {
+        throw new Error(`Server error: ${res.status}`);
+      }
+
       const data = await res.json();
 
       typingEl.remove();
       typingEl = null;
 
-      addMsg("SteveBot", data.answer || "Hmm... I didn’t get a response.");
+      if (data.answer) {
+        addMsg("SteveBot", data.answer);
+      } else {
+        addMsg("SteveBot", "Hmm... I didn’t get a response.");
+      }
     } catch (err) {
       console.error("SteveBot error:", err);
       if (typingEl) typingEl.remove();
