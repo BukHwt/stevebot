@@ -56,7 +56,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     let runStatus = run;
     let attempts = 0;
-    const maxAttempts = 20;
+    const maxAttempts = 10;
 
     while (
       runStatus.status !== "completed" &&
