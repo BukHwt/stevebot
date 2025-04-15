@@ -44,6 +44,7 @@
         padding: 12px;
         font-family: sans-serif;
         font-size: 14px;
+        color: black;
       }
   
       #stevebot-input {
