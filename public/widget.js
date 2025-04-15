@@ -18,6 +18,7 @@
         font-size: 24px;
         cursor: pointer;
         box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        border-radius: 15px;
       }
   
       #stevebot-box {
