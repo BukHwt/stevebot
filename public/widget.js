@@ -108,14 +108,14 @@
     }
 
     .stevebot-msg.user .stevebot-bubble {
-        background-color: #eee;
-        color: #000;
+        background-color: #0076b6;
+        color: white;
         border-bottom-right-radius: 0;
     }
 
     .stevebot-msg.bot .stevebot-bubble {
-        background-color: #0076b6;
-        color: white;
+        background-color: #eee;
+        color: black;
         border-bottom-left-radius: 0;
     }
 
@@ -134,15 +134,25 @@
 
   const box = document.createElement("div");
   box.id = "stevebot-box";
+  const timestamp = new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
   box.innerHTML = `
-      <div id="stevebot-messages">
-        <div><strong>SteveBot:</strong> 👋 Hi! Ask me anything about Steve.</div>
+    <div id="stevebot-messages">
+      <div class="stevebot-msg bot">
+        <div class="stevebot-bubble">
+          👋 Hi! Ask me anything about Steve.
+        </div>
+        <div class="stevebot-timestamp">${timestamp}</div>
       </div>
-      <div id="stevebot-input">
-        <input type="text" placeholder="Type your question..." />
-        <button>Send</button>
-      </div>
-    `;
+    </div>
+    <div id="stevebot-input">
+      <input type="text" placeholder="Type your question..." />
+      <button>Send</button>
+    </div>
+  `;
   document.body.appendChild(box);
 
   btn.onclick = () => {
