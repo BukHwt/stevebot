@@ -59,14 +59,33 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     let runStatus = run;
     let attempts = 0;
-    while (runStatus.status !== "completed" && attempts < 20) {
+    const maxAttempts = 20;
+
+    while (
+      runStatus.status !== "completed" &&
+      runStatus.status !== "failed" &&
+      runStatus.status !== "requires_action" &&
+      attempts < maxAttempts
+    ) {
       await new Promise((r) => setTimeout(r, 1000));
       runStatus = await openai.beta.threads.runs.retrieve(thread.id, run.id);
       attempts++;
     }
 
+    if (runStatus.status === "failed") {
+      throw new Error("Assistant run failed.");
+    }
+
+    if (runStatus.status === "requires_action") {
+      throw new Error("Assistant requires action and can't continue.");
+    }
+
     if (runStatus.status !== "completed") {
-      throw new Error("Run did not complete in time");
+      console.warn("SteveBot timed out. Status was:", runStatus.status);
+      return res.status(200).json({
+        answer:
+          "I'm thinking real hard about that one. Try again in a few seconds!",
+      });
     }
 
     const messages = await openai.beta.threads.messages.list(thread.id);
