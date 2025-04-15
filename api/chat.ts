@@ -7,33 +7,44 @@ const openai = new OpenAI({
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://steveandersonthedeveloper.com",
   "https://stevebot.vercel.app",
+  "https://steveandersonthedeveloper.com",
 ];
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const origin = req.headers.origin || "";
-  if (allowedOrigins.includes(origin)) {
+  const isAllowed = allowedOrigins.includes(origin);
+
+  // ✅ Set CORS headers early
+  if (isAllowed) {
     res.setHeader("Access-Control-Allow-Origin", origin);
   }
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  // 🧪 Handle preflight request
+  // ✅ Handle preflight request
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
+  // ✅ Explicitly handle GET so it doesn't crash
+  if (req.method === "GET") {
+    return res.status(200).send("SteveBot is online.");
+  }
+
+  // ✅ Allow only POST after that
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
 
-  const { question } = req.body;
-  if (!question) {
-    return res.status(400).json({ error: "Missing question" });
-  }
-
   try {
+    const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
+    const { question } = body;
+
+    if (!question) {
+      return res.status(400).json({ error: "Missing question" });
+    }
+
     const assistantId = process.env.OPENAI_ASSISTANT_ID!;
     const thread = await openai.beta.threads.create();
 
@@ -69,8 +80,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     return res.status(200).json({ answer });
   } catch (err: any) {
-    console.error("SteveBot error:", err);
+    console.error("🔥 SteveBot Error:", err);
     return res.status(500).json({ error: "Internal Server Error" });
   }
-  //
 }
