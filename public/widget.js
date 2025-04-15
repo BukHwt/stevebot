@@ -66,6 +66,25 @@
         padding: 12px;
         cursor: pointer;
       }
+
+    @keyframes blink {
+        0%, 80%, 100% { opacity: 0; }
+        40% { opacity: 1; }
+    }
+
+    .stevebot-typing em {
+        font-style: italic;
+        color: #555;
+    }
+
+    .stevebot-typing span {
+        animation: blink 1.4s infinite;
+        font-weight: bold;
+    }
+
+    .stevebot-typing .dot-1 { animation-delay: 0s; }
+    .stevebot-typing .dot-2 { animation-delay: 0.2s; }
+    .stevebot-typing .dot-3 { animation-delay: 0.4s; }
     `;
   document.head.appendChild(style);
 
@@ -107,7 +126,10 @@
 
     let typingEl = document.createElement("div");
     typingEl.id = "stevebot-typing";
-    typingEl.innerHTML = `<em>SteveBot is typing...</em>`;
+    typingEl.className = "stevebot-typing";
+    typingEl.innerHTML = `
+        <em>SteveBot is typing<span class="dot-1">.</span><span class="dot-2">.</span><span class="dot-3">.</span></em>
+    `;
     msgBox.appendChild(typingEl);
     msgBox.scrollTop = msgBox.scrollHeight;
 
