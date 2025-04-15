@@ -1,5 +1,6 @@
 (function () {
   console.log("🎉 SteveBot widget loaded");
+  console.log("👋 Hi! I'm SteveBot, your friendly assistant.");
 
   // Add styles
   const style = document.createElement("style");
