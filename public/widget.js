@@ -18,7 +18,6 @@
         font-size: 24px;
         cursor: pointer;
         box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        border-radius: 15px;
       }
   
       #stevebot-box {
@@ -66,6 +65,8 @@
         border: none;
         padding: 12px;
         cursor: pointer;
+        border-radius: 20px;
+        margin: 10px 10px 10px 0;
       }
 
     @keyframes blink {
