@@ -104,13 +104,21 @@
     addMsg("You", text);
     input.value = "";
 
-    // Placeholder response until we hook up OpenAI
-    setTimeout(() => {
-      addMsg(
-        "SteveBot",
-        `You asked: "${text}". I'm still learning about Steve!`
-      );
-    }, 600);
+    try {
+      const res = await fetch("https://stevebot.vercel.app/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ question: text }),
+      });
+
+      const data = await res.json();
+      addMsg("SteveBot", data.answer || "Hmm... I didn’t get a response.");
+    } catch (err) {
+      console.error("SteveBot error:", err);
+      addMsg("SteveBot", "Sorry, I fumbled that one. Try again?");
+    }
   };
 
   function addMsg(who, text) {
