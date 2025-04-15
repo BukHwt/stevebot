@@ -64,7 +64,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       runStatus.status !== "requires_action" &&
       attempts < maxAttempts
     ) {
-      await new Promise((r) => setTimeout(r, 1000));
+      await new Promise((r) => setTimeout(r, 750));
       runStatus = await openai.beta.threads.runs.retrieve(thread.id, run.id);
       attempts++;
     }
