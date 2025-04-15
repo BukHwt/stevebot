@@ -105,6 +105,12 @@
     input.blur();
     sendBtn.disabled = true;
 
+    let typingEl = document.createElement("div");
+    typingEl.id = "stevebot-typing";
+    typingEl.innerHTML = `<em>SteveBot is typing...</em>`;
+    msgBox.appendChild(typingEl);
+    msgBox.scrollTop = msgBox.scrollHeight;
+
     try {
       const res = await fetch("https://stevebot.vercel.app/api/chat", {
         method: "POST",
@@ -115,9 +121,14 @@
       });
 
       const data = await res.json();
+
+      typingEl.remove();
+      typingEl = null;
+
       addMsg("SteveBot", data.answer || "Hmm... I didn’t get a response.");
     } catch (err) {
       console.error("SteveBot error:", err);
+      if (typingEl) typingEl.remove();
       addMsg("SteveBot", "Sorry, I fumbled that one. Try again?");
     } finally {
       sendBtn.disabled = false;
