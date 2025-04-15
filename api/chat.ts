@@ -5,6 +5,25 @@ const openai = new OpenAI({
 });
 
 export default async function handler(req: any, res: any) {
+  // 🔒 Allowed origins for CORS
+  const allowedOrigins = [
+    "http://localhost:5173",
+    "https://steveandersonthedeveloper.com",
+    "https://stevebot.vercel.app",
+  ];
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  // 🧪 Handle preflight check
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
@@ -30,7 +49,7 @@ export default async function handler(req: any, res: any) {
     let runStatus = run;
     let attempts = 0;
 
-    // Poll until run completes
+    // ⏱️ Poll until the Assistant finishes the play
     while (runStatus.status !== "completed" && attempts < 20) {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       runStatus = await openai.beta.threads.runs.retrieve(thread.id, run.id);
