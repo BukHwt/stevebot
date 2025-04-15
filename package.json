@@ -5,6 +5,7 @@
     "dev": "vercel dev"
   },
   "dependencies": {
+    "@vercel/node": "^5.1.14",
     "openai": "^4.94.0"
   }
 }
