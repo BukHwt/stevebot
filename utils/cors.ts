@@ -1,13 +1,13 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://stevebot.vercel.app",
-  "https://steveandersonthedeveloper.com",
-  "https://portfolio-project-5gl6dwvna-steve-andersons-projects-d862a8e0.vercel.app",
-];
-
 export function applyCorsHeaders(req: VercelRequest, res: VercelResponse) {
+  const allowedOrigins = [
+    "http://localhost:5173",
+    "https://stevebot.vercel.app",
+    "https://steveandersonthedeveloper.com",
+    "https://portfolio-project-5gl6dwvna-steve-andersons-projects-d862a8e0.vercel.app",
+  ];
+
   const origin = req.headers.origin || "";
   const isAllowed = allowedOrigins.includes(origin);
 
