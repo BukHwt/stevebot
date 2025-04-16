@@ -1,5 +1,6 @@
 import { OpenAI } from "openai";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { applyCorsHeaders } from "../utils/cors";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -37,7 +38,4 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     console.error("Error starting run:", err);
     return res.status(500).json({ error: "Failed to start run" });
   }
-}
-function applyCorsHeaders(req: VercelRequest, res: VercelResponse) {
-  throw new Error("Function not implemented.");
 }
