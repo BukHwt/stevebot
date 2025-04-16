@@ -11,10 +11,13 @@ export function applyCorsHeaders(req: VercelRequest, res: VercelResponse) {
   const origin = req.headers.origin || "";
   const isAllowed = allowedOrigins.includes(origin);
 
+  console.log("CORS origin:", origin, "Allowed:", isAllowed);
+
   if (isAllowed) {
     res.setHeader("Access-Control-Allow-Origin", origin);
   }
 
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Max-Age", "86400");
 }

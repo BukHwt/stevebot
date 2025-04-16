@@ -5,28 +5,27 @@ import { applyCorsHeaders } from "../utils/cors";
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // ✅ Always apply CORS headers first
+  // ✅ Always apply CORS first
   applyCorsHeaders(req, res);
 
-  // ✅ Short-circuit OPTIONS before doing anything else
+  // ✅ Immediately handle preflight requests — no parsing, no body access
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
-  // ✅ THEN check POST and safely access req.body
+  // ✅ Only continue if it's a POST
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
 
   try {
-    const { question } = req.body;
-
+    // ✅ Safe to read body *after* method check
+    const { question } = req.body || {};
     if (!question) {
       return res.status(400).json({ error: "Missing question" });
     }
 
     const thread = await openai.beta.threads.create();
-
     await openai.beta.threads.messages.create(thread.id, {
       role: "user",
       content: question,
