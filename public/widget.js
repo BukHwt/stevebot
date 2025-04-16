@@ -179,33 +179,65 @@
     typingEl.id = "stevebot-typing";
     typingEl.className = "stevebot-typing";
     typingEl.innerHTML = `
-        <em>SteveBot is typing<span class="dot-1">.</span><span class="dot-2">.</span><span class="dot-3">.</span></em>
+      <em>SteveBot is typing<span class="dot-1">.</span><span class="dot-2">.</span><span class="dot-3">.</span></em>
     `;
     msgBox.appendChild(typingEl);
     msgBox.scrollTop = msgBox.scrollHeight;
 
     try {
-      const res = await fetch("https://stevebot.vercel.app/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ question: text }),
-      });
+      // STEP 1: Start the run
+      const startRes = await fetch(
+        "https://stevebot.vercel.app/api/start-run",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: text }),
+        }
+      );
 
-      if (!res.ok) {
-        throw new Error(`Server error: ${res.status}`);
+      if (!startRes.ok) throw new Error("Failed to start SteveBot");
+
+      const { threadId, runId } = await startRes.json();
+
+      // STEP 2: Poll until completed
+      let completed = false;
+      let attempts = 0;
+      let answer = null;
+
+      while (!completed && attempts < 20) {
+        await new Promise((r) => setTimeout(r, 1000));
+
+        const checkRes = await fetch(
+          "https://stevebot.vercel.app/api/check-run",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ threadId, runId }),
+          }
+        );
+
+        if (!checkRes.ok) throw new Error("Failed to check SteveBot status");
+
+        const checkData = await checkRes.json();
+
+        if (checkData.status === "completed") {
+          completed = true;
+          answer = checkData.answer;
+        }
+
+        attempts++;
       }
-
-      const data = await res.json();
 
       typingEl.remove();
       typingEl = null;
 
-      if (data.answer) {
-        addMsg("SteveBot", data.answer);
+      if (answer) {
+        addMsg("SteveBot", answer);
       } else {
-        addMsg("SteveBot", "Hmm... I didn’t get a response.");
+        addMsg(
+          "SteveBot",
+          "SteveBot is still thinking. Try again in a few seconds."
+        );
       }
     } catch (err) {
       console.error("SteveBot error:", err);
