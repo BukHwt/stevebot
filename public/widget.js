@@ -186,6 +186,7 @@
 
     try {
       // STEP 1: Start the run
+      console.log("Starting SteveBot run...");
       const startRes = await fetch(
         "https://stevebot.vercel.app/api/start-run",
         {
