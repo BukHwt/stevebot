@@ -166,6 +166,15 @@
   const sendBtn = box.querySelector("button");
   const msgBox = document.getElementById("stevebot-messages");
 
+  document.addEventListener("click", function (e) {
+    const isClickInsideBox = box.contains(e.target);
+    const isClickOnButton = btn.contains(e.target);
+
+    if (!isClickInsideBox && !isClickOnButton && box.style.display === "flex") {
+      box.style.display = "none";
+    }
+  });
+
   async function sendMessage() {
     const text = input.value.trim();
     if (!text) return;
@@ -185,7 +194,6 @@
     msgBox.scrollTop = msgBox.scrollHeight;
 
     try {
-      // STEP 1: Start the run
       console.log("Starting SteveBot run...");
       const startRes = await fetch(
         "https://stevebot.vercel.app/api/start-run",
@@ -200,7 +208,6 @@
 
       const { threadId, runId } = await startRes.json();
 
-      // STEP 2: Poll until completed
       let completed = false;
       let attempts = 0;
       let answer = null;

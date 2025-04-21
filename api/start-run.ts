@@ -5,21 +5,17 @@ import { applyCorsHeaders } from "./cors.js";
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // ✅ Always apply CORS first
   applyCorsHeaders(req, res);
 
-  // ✅ Immediately handle preflight requests — no parsing, no body access
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
-  // ✅ Only continue if it's a POST
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
 
   try {
-    // ✅ Safe to read body *after* method check
     const { question } = req.body || {};
     if (!question) {
       return res.status(400).json({ error: "Missing question" });

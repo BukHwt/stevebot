@@ -7,7 +7,6 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   applyCorsHeaders(req, res);
 
-  // ✅ Handle preflight request immediately
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
