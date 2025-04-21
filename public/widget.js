@@ -246,7 +246,9 @@
       addMsg("SteveBot", "Sorry, I fumbled that one. Try again?");
     } finally {
       sendBtn.disabled = false;
-      input.focus();
+      if (!/Mobi|Android/i.test(navigator.userAgent)) {
+        input.focus();
+      }
     }
   }
 
