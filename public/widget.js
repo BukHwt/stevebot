@@ -9,15 +9,21 @@
         bottom: 16px;
         left: 16px;
         z-index: 9999;
-        background-color:rgb(0, 96, 148);
-        color: white;
-        border: none;
+        background-color: #ffffff;
+        color: #333333;
+        border: 3px solid #0076b6;
         border-radius: 50%;
-        width: 48px;
-        height: 48px;
+        width: 56px;
+        height: 56px;
         font-size: 24px;
         cursor: pointer;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.4), 0 0 0 2px rgba(255,255,255,0.8);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      
+      #stevebot-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.5), 0 0 0 3px rgba(255,255,255,0.9);
       }
   
       #stevebot-box {
@@ -43,7 +49,7 @@
         padding: 12px;
         font-family: sans-serif;
         font-size: 14px;
-        color: black;
+        color: #212529 !important;
       }
   
       #stevebot-input {
@@ -57,6 +63,15 @@
         font-size: 14px;
         border: none;
         outline: none;
+        color: #212529 !important;
+        background-color: #f8f9fa !important;
+        border: 1px solid #dee2e6;
+        border-radius: 20px;
+        margin: 8px;
+      }
+      
+      #stevebot-input input::placeholder {
+        color: #6c757d !important;
       }
   
       #stevebot-input button {
@@ -76,12 +91,13 @@
 
     .stevebot-typing em {
         font-style: italic;
-        color: #555;
+        color: #212529 !important;
     }
 
     .stevebot-typing span {
         animation: blink 1.4s infinite;
         font-weight: bold;
+        color: #212529 !important;
     }
 
     .stevebot-typing .dot-1 { animation-delay: 0s; }
@@ -116,8 +132,9 @@
     }
 
     .stevebot-msg.bot .stevebot-bubble {
-        background-color: #eee;
-        color: black;
+        background-color: #f8f9fa !important;
+        color: #212529 !important;
+        border: 1px solid #dee2e6;
         border-bottom-left-radius: 0;
     }
 
@@ -145,7 +162,7 @@
     <div id="stevebot-messages">
       <div class="stevebot-msg bot">
         <div class="stevebot-bubble">
-          👋 Hi! Ask me anything about Steve.
+          👋 Hi! I'm Stevebot. Ask me anything you want to know about Steve!
         </div>
         <div class="stevebot-timestamp">${timestamp}</div>
       </div>
